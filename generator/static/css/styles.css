@@ -1,0 +1,30 @@
+html {
+    height: -webkit-fill-available;
+    color: #323232;
+}
+
+body {
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+}
+
+main {
+    min-height: calc(100vh - 138px);
+    height: -webkit-fill-available;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+footer {
+    width: 100%;
+    position: relative;
+    background-color: #f4f4f4;
+}
+
+.bg-cyan {
+    background-color: #319bad;
+}
+
+.logo {
+    height: 30px;
+}
