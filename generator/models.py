@@ -7,7 +7,7 @@ from django.db import models
 
 class Password(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    value = models.CharField(max_length=50)
+    value = models.CharField(max_length=50, null=True)
     expiration_date = models.DateField()
     maximum_views = models.IntegerField()
     views = models.IntegerField()

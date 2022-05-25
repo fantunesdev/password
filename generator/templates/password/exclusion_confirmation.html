@@ -1,0 +1,32 @@
+{% extends "index.html" %}
+{% load static %}
+
+{% block title %} Senhas Gerada {% endblock %}
+
+{% block content %}
+<p class="fs-2 text-center">Você está prestes a excluir a senha abaixo. Tem certeza que gostaria de continuar?</p>
+<p class="fs-2 text-center">A operação é irreversível.</p>
+
+<p class="fs-5 text-center">Senha:</p>
+<p class="fs-3 text-center">{{ password.value }}</p>
+
+<p class="fs-5 text-center">Data de expiração:</p>
+<p class="fs-3 text-center">{{ password.expiration_date }}</p>
+
+<p class="fs-5 text-center">Número máximo de visualizações:</p>
+<p class="fs-3 text-center">{{ password.maximum_views }}</p>
+
+<p class="fs-5 text-center">Visualizações realizadas:</p>
+<p class="fs-3 text-center">{{ password.views }}</p>
+
+<p class="fs-5 text-center">Link para visualização:</p>
+<p class="fs-3 text-center"><a href="/passwords/{{ password.id }}/">http://{{ request.META.HTTP_HOST }}/passwords/{{ password.id }}/</a></p>
+
+<form method="post">
+    {% csrf_token %}
+    <p class="fs-3">{{ exclusion_form }} Sim, desejo excluir e estou ciente de que esta operação é irreversível.</p>
+    <a href="{{request.META.HTTP_REFERER}}"><input type="button" value="Voltar" class="btn btn-info"></a>
+    <input type="submit" value="Excluir" class="btn btn-danger">
+</form>
+
+{% endblock %}

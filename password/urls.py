@@ -16,7 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from generator.views import create_password
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+
+    path('', create_password),
+    path('api/', include('api.urls')),
     path('passwords/', include('generator.urls')),
 ]
