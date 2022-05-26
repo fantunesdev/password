@@ -14,6 +14,4 @@ def get_access():
 
 
 def get_access_password(password):
-    access = Access.objects.select_related('password').filter(password=password)
-    print(access)
-    return access
+    return Access.objects.select_related('password').filter(password=password)

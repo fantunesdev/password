@@ -1,4 +1,5 @@
-from django.utils.datetime_safe import datetime
+from datetime import datetime
+
 from ipware import get_client_ip
 
 from generator.entities.access import Access
