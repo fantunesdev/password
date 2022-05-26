@@ -1,13 +1,16 @@
-import re
-import string
 from datetime import datetime
-from random import choice
 
 from generator.entities.password import Password
 from generator.services import password_service
 
 
 def increment_view(id):
+    """
+    Incrementa a visulização ou apaga o registro do valor do objeto do tipo Password caso o número máximo de
+    visualizacoes ja tenha sido atingido.
+    :param id: String com o id da instância Password.
+    :return: Password cadastrado no banco de dados.
+    """
     old_password = password_service.get_password_id(id)
     new_password = Password(
         value=old_password.value,

@@ -10,12 +10,16 @@
     <title>{% block title %} {% endblock %}</title>
 </head>
 <body>
+<!-- Inclui a barra de navegação no topo - Início -->
 {% include '_frames/_topbar.html' %}
+<!-- Inclui a barra de navegação no topo - Fim -->
 <br>
     <main class="container">
     {% block content %}{% endblock %}
     </main>
+<!-- Início inclusao do footer -->
 {% include '_frames/_footer.html' %}
+<!-- Fim inclusao do footer -->
     <!-- JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
     {% block scripts %}{% endblock %}

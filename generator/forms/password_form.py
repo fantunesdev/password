@@ -7,6 +7,9 @@ from generator.models import Password
 
 
 class PasswordForm(forms.ModelForm):
+    """
+    Classe para renderização e validação dos dados oriundos do Model Password.
+    """
     class Meta:
         model = Password
         fields = ['value', 'expiration_date', 'maximum_views']

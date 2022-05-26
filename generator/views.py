@@ -15,6 +15,14 @@ template_tags = {
 
 
 def create_password(request):
+    """
+    Instancia um objeto do tipo PasswordForm passando-o para o template. Le os campos do template, cria uma instancia da
+    classe Password e passa para o service fazer o cadastro no banco de dados.
+    :param request: Instancia da requisicaoo HTTP
+    :return: Se o verbo HTTP for GET, esta abrindo a página e renderiza o template de cadastro de senha. Seo verbo HTTP
+    for POST, coleta os valores do formulario, insere-os numa instância da classe Password e passa para o service fazer
+    o cadastro.
+    """
     if request.method == 'POST':
         form_password = password_form.PasswordForm(request.POST)
         if form_password.is_valid():
@@ -33,12 +41,25 @@ def create_password(request):
 
 
 def get_passwords(request):
+    """
+    Solicita ao service todos os passwords cadastrados e passa a variável para o template.
+    :param request: Instancia da requisição HTTP
+    :return: Renderiza o template que exibe todos os passwords gravados.
+    """
     passwords = password_service.get_passwords()
     template_tags['passwords'] = passwords
     return render(request, 'password/get_passwords.html', template_tags)
 
 
 def get_password_id(request, id):
+    """
+    Método que exibe o link com a senha para o usuario final. Solicita ao service a instancia do model Password que
+    corresponde ao 'id' passado na URL. Passa ao repositório validar as regras de incrementacao do campo view.
+    Registra a hora e o ip do acesso.
+    :param request: Instancia da requisicao HTTP
+    :param id: String do 'id' a ser buscado no banco de dados.
+    :return: Renderiza o template e exibe a senha gerada para o usuario final.
+    """
     password = password_repository.increment_view(id)
     access_repository.register_access(request, password)
     template_tags['password'] = password
@@ -46,6 +67,12 @@ def get_password_id(request, id):
 
 
 def view_access(request, id):
+    """
+    Método que mostra a senha para o administrador, junto com as informações de acesso.
+    :param request: Instancia da requisicao HTTP
+    :param id: String do 'id' a ser buscado no banco de dados.
+    :return: Renderiza o template e exibe a senha gerada e informações de acesso para o administrador.
+    """
     password = password_service.get_password_id(id)
     access = access_service.get_access_password(password)
     template_tags['password'] = password
@@ -54,6 +81,12 @@ def view_access(request, id):
 
 
 def delete_password(request, id):
+    """
+    Deleta um registro do Password e as informações de acesso a partir de um id.
+    :param request: Instancia da requisicao HTTP
+    :param id: String do 'id' a ser buscado no banco de dados.
+    :return: Renderiza o template da página de confirmacao de exclusao.
+    """
     password = password_service.get_password_id(id)
     if request.POST.get('confirmation'):
         password_service.delete_password(password)
@@ -64,6 +97,11 @@ def delete_password(request, id):
 
 
 def delete_expirated(request):
+    """
+    Deleta todos os registros de Password que expiraram, bem como as informações de acesso, como data/hora e ip.
+    :param request: Instancia da requisicao HTTP
+    :return: Renderiza o template da página de confirmacao de exclusao dos passwords.
+    """
     passwords = password_service.get_expirated_passords()
     if request.POST.get('confirmation'):
         for password in passwords:
