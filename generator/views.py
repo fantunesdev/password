@@ -1,3 +1,6 @@
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect
 from django.utils.datetime_safe import datetime
 
@@ -14,6 +17,7 @@ template_tags = {
 }
 
 
+@login_required
 def create_password(request):
     """
     Instancia um objeto do tipo PasswordForm passando-o para o template. Le os campos do template, cria uma instancia da
@@ -40,6 +44,7 @@ def create_password(request):
     return render(request, 'password/form_password.html', template_tags)
 
 
+@login_required
 def get_passwords(request):
     """
     Solicita ao service todos os passwords cadastrados e passa a variável para o template.
@@ -66,6 +71,7 @@ def get_password_id(request, id):
     return render(request, 'password/password_details.html', template_tags)
 
 
+@login_required
 def view_access(request, id):
     """
     Método que mostra a senha para o administrador, junto com as informações de acesso.
@@ -80,6 +86,7 @@ def view_access(request, id):
     return render(request, 'password/password_details.html', template_tags)
 
 
+@login_required
 def delete_password(request, id):
     """
     Deleta um registro do Password e as informações de acesso a partir de um id.
@@ -96,6 +103,7 @@ def delete_password(request, id):
     return render(request, 'password/password_details.html', template_tags)
 
 
+@login_required
 def delete_expirated(request):
     """
     Deleta todos os registros de Password que expiraram, bem como as informações de acesso, como data/hora e ip.
@@ -110,3 +118,35 @@ def delete_expirated(request):
     template_tags['passwords'] = passwords
     template_tags['exclusion_form'] = ExclusionForm()
     return render(request, 'password/get_passwords.html', template_tags)
+
+
+def login_user(request):
+    """
+    Cria uma sessao para o administrador
+    :param request: Instancia da requisicao HTTP
+    :return: Renderiza o template da pagina de login.
+    """
+    if request.method == 'POST':
+        user = authenticate(
+            username=request.POST['username'],
+            password=request.POST['password']
+        )
+        print(user.username)
+        if user is not None:
+            login(request, user)
+            return redirect('create_password')
+        else:
+            form_login = AuthenticationForm()
+    else:
+        form_login = AuthenticationForm()
+    return render(request, 'login/login.html', {'form_login': form_login})
+
+
+@login_required
+def logout_user(request):
+    """
+    Encerra a sessao do administrador.
+    :param request: Instancia da requisicao HTTP
+    """
+    logout(request)
+    return redirect('login_user')

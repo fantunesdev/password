@@ -16,10 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from generator.views import create_password
+from generator.views import create_password, login_user, logout_user
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('login/', login_user, name='login_user'),
+    path('logout/', logout_user, name='logout_user'),
 
     path('', create_password),
     path('api/', include('api.urls')),
