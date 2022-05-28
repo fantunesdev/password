@@ -1,2 +1,5 @@
 */migrations/*
 /static/
+action.yml
+Dockerfile
+entrypoint.sh

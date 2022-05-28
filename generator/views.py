@@ -131,7 +131,6 @@ def login_user(request):
             username=request.POST['username'],
             password=request.POST['password']
         )
-        print(user.username)
         if user is not None:
             login(request, user)
             return redirect('create_password')
