@@ -65,8 +65,11 @@ def get_password_id(request, id):
     :param id: String do 'id' a ser buscado no banco de dados.
     :return: Renderiza o template e exibe a senha gerada para o usuario final.
     """
-    password = password_repository.increment_view(id)
-    access_repository.register_access(request, password)
+    if request.user.is_authenticated:
+        password = password_service.get_password_id(id)
+    else:
+        password = password_repository.increment_view(id)
+        access_repository.register_access(request, password)
     template_tags['password'] = password
     return render(request, 'password/password_details.html', template_tags)
 
