@@ -24,17 +24,19 @@ A senha <strong>não deve ser armazenada</strong> após sua expiração
 
 ## Design
 
+![alt text](https://uploaddeimagens.com.br/images/003/885/878/original/tree.png?1653847733)
+
 - A aplicação está dividida em duas partes, que segundo a documentação do Django são chamadas de apps. O app **generator** e o app **api**.
 - O app **generator** serve o site.
 - O app **api** serve as requisições http que são feitas pelo JavaScript ao back-end.
-- De forma geral a aplicação está dividida em camadas. Além do sitema MTV habitual do Django, fizemos ainda algumas divisões para dividir responsabilidades que normalmente ficariam na **view** com vistas na melhoria da manutenibilidade do código. Permitindo que várias funcionalidades do código sejam corrigidas ou implementadas separadamente e deixando a camada **view** com a única responsabilidade chamar todas as variáveis necessárias para renderizar os templates. 
+- De forma geral a aplicação está dividida em camadas. Além do sitema MTV habitual do Django, fizemos ainda algumas divisões para repartir responsabilidades que normalmente ficariam na **view**. Essa mudança tem vistas na melhoria da manutenibilidade do código. Permitindo que várias funcionalidades do código sejam corrigidas ou implementadas separadamente e deixando a camada **view** com a única responsabilidade chamar todas as variáveis necessárias para renderizar os templates. 
   1) A camada **entities** contém as classes utilizadas na aplicação.
   2) A camada **forms** é responsável pela criação e validação dos formulários renderizados no front-end.
   3) A camada **serializers**, presente apenas no app **api**, tem a mesma funcionalidade da camada **forms**, com a diferença de que as validações dos campos são feitas com base nas requisições solicitadas à API e não à renderização de formulários HTML.
   4) A camada **repositories** implemeta as regras de negócio da aplicação.
   5) A camada **services** manipula os registros do banco de dados.
   6) A camada **static** fica responsável pela implementação dos arquivos estáticos como os arquivos CSS e JavaScript.
-  7) A camada **templates**, como sabido, implementa os arquivos HTML que serão utilizados pela view. Mas gostaríamos de ressaltar que fizemos um estudo para aglutinar os 6 métodos da **view** em 3 arquivos HTML. Proporcionando assim maior reaproveitamento de código. Fizemos ainda uma subdivisão da navbar e do footer, colocando-os dentro da pasta _frames. Assim o index.html fica mais organizado, abrindo ainda a possibilidade que possam ser destacados da página principal de acordo com o interesse.
+  7) A camada **templates**, como sabido, implementa os arquivos HTML que serão utilizados pela view. Mas gostaríamos de ressaltar que fizemos um estudo para aglutinar os 5 métodos da **view** em 3 arquivos HTML. Proporcionando assim maior reaproveitamento de código. Fizemos ainda uma subdivisão da navbar e do footer, colocando-os dentro da pasta _frames. Assim o index.html fica mais organizado, abrindo ainda a possibilidade que possam ser destacados da página principal de acordo com o interesse.
   8) A pasta **password** guarda os arquivos de configração do Django.
 
 ## Segurança

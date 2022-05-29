@@ -37,7 +37,7 @@ def create_password(request):
                 views=0
             )
             password_db = password_service.create_password(new_password)
-            return redirect('view_access', password_db.id)
+            return redirect('get_password_id', password_db.id)
     else:
         form_password = password_form.PasswordForm()
     template_tags['form_password'] = form_password
@@ -67,25 +67,12 @@ def get_password_id(request, id):
     """
     if request.user.is_authenticated:
         password = password_service.get_password_id(id)
+        access = access_service.get_access_password(password)
+        template_tags['access'] = access
     else:
         password = password_repository.increment_view(id)
         access_repository.register_access(request, password)
     template_tags['password'] = password
-    return render(request, 'password/password_details.html', template_tags)
-
-
-@login_required
-def view_access(request, id):
-    """
-    Método que mostra a senha para o administrador, junto com as informações de acesso.
-    :param request: Instancia da requisicao HTTP
-    :param id: String do 'id' a ser buscado no banco de dados.
-    :return: Renderiza o template e exibe a senha gerada e informações de acesso para o administrador.
-    """
-    password = password_service.get_password_id(id)
-    access = access_service.get_access_password(password)
-    template_tags['password'] = password
-    template_tags['access'] = access
     return render(request, 'password/password_details.html', template_tags)
 
 

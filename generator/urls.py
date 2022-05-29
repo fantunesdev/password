@@ -7,6 +7,5 @@ urlpatterns = [
     path('', get_passwords, name='get_passwords'),
     path('expirated/', delete_expirated, name='delete_expirated'),
     path('<str:id>/', get_password_id, name='get_password_id'),
-    path('access/<str:id>/', view_access, name='view_access'),
     path('delete/<str:id>/', delete_password, name='delete_password'),
 ]
