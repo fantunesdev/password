@@ -26,7 +26,15 @@
             </ul>
         </div>
         {% if request.user.is_authenticated %}
-        <a class="fs-6 nav-link active link-light" aria-current="page" href="{% url 'logout_user' %}">{{ request.user.username }} - Logout</a>
+<!--        <a class="fs-6 nav-link active link-light" aria-current="page" href="{% url 'logout_user' %}">{{ request.user.username }} - Logout</a>-->
+        <div class="dropdown nav-item">
+            <a class="dropdown-toggle fs-6 nav-link active link-light" id="profile-menu" data-bs-toggle="dropdown">
+                {{ request.user.username }}
+            </a>
+            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="profile-menu">
+                <a class="dropdown-item" aria-current="page" href="{% url 'logout_user' %}">Logout</a>
+            </div>
+        </div>
         {% else %}
         <a class="fs-5 nav-link active link-light" aria-current="page" href="{% url 'login_user' %}">Login</a>
         {% endif %}
