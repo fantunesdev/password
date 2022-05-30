@@ -26,22 +26,6 @@ A senha <strong>não deve ser armazenada</strong> após sua expiração
 
 ![alt text](https://uploaddeimagens.com.br/images/003/886/232/original/Tree.png?1653882054)
 
-── api<br>
-│   ├── repositories<br>
-│   └── serializers<br>
-├── generator<br>
-│   ├── entities<br>
-│   ├── forms<br>
-│   ├── repositories<br>
-│   ├── services<br>
-│   ├── static<br>
-│   ├── templates<br>
-│   │   ├── _frames<br>
-│   │   ├── login<br>
-│   │   └── password<br>
-│   └── templatetags<br>
-└── password
-
 
 - A aplicação está dividida em duas partes, que segundo a documentação do Django são chamadas de apps. O app **generator** e o app **api**.
 - O app **generator** serve o site.
