@@ -36,7 +36,7 @@ A senha <strong>não deve ser armazenada</strong> após sua expiração
   4) A camada **repositories** implemeta as regras de negócio da aplicação.
   5) A camada **services** manipula os registros do banco de dados.
   6) A camada **static** fica responsável pela implementação dos arquivos estáticos como os arquivos CSS e JavaScript.
-  7) A camada **templates**, como sabido, implementa os arquivos HTML que serão utilizados pela view. Mas gostaríamos de ressaltar que fizemos um estudo para aglutinar os 5 métodos da **view** em 3 arquivos HTML. Proporcionando assim maior reaproveitamento de código. Fizemos ainda uma subdivisão da navbar e do footer, colocando-os dentro da pasta _frames. Assim o index.html fica mais organizado, abrindo ainda a possibilidade que possam ser destacados da página principal de acordo com o interesse.
+  7) A camada **templates**, como sabido, implementa os arquivos HTML que serão utilizados pela view. Mas gostaríamos de ressaltar que fizemos um estudo para aglutinar os 5 métodos da **view** em 3 arquivos HTML. Proporcionando assim maior reaproveitamento de código. Fizemos ainda uma subdivisão da navbar e do footer, colocando-os dentro da pasta _frames. Assim o index.html fica mais organizado, abrindo ainda a possibilidade que ambos possam ser destacados da página principal de acordo com o interesse.
   8) A pasta **password** guarda os arquivos de configração do Django.
 
 ## Segurança
@@ -50,9 +50,9 @@ A senha <strong>não deve ser armazenada</strong> após sua expiração
 
 1) ###Geração da senha aleatória:
    - O processo de geração de senha é feito no back-end pela aplicação **api**, que cria e valida uma string randômica com no mínimo 8 e no máximo 50 caracteres. Sendo obrigatória a presença de maiúsculas, minúsculas, números e caracteres especiais.
-     - Quanto aos caracteres especiais selecionamos alguns manualmente tentando evitar alguns que sabidamente dão problemas em determinados contextos como '/' e '\', mas para uma ação mais assertiva seria interessante fazer um estudo dos impactos nas aplicações para as quais as senhas estão sendo geradas.
-   - O administrador do site pode determinar o tamanho da senha por um **input** do tipo **range** ou por um do tipo **number**. São enviadas automaticamente para a API via JavaScript, visando uma melhor experiência do usuário, visto que as alterações acontecem em tempo real.
-   - A senha é gerada assim que a página é carregada, mas há um botão **atualizar** que faz uma requisição para a API em JavaScript permitindo que o administrador do site possa gerar várias senhas até achar uma que considere mais amigável, se for do seu interesse.
+     - Quanto aos caracteres especiais selecionamos alguns manualmente tentando evitar alguns que sabidamente dão problemas em determinados contextos como '/' e '\\', mas para uma ação mais assertiva seria interessante fazer um estudo dos impactos nas aplicações para as quais as senhas estão sendo geradas.
+   - O administrador do site pode determinar o tamanho da senha por um **input** do tipo **range** ou por um do tipo **number**. As alterações nesses campos são enviadas automaticamente para a API via JavaScript, visando uma melhor experiência do usuário, visto que as alterações acontecem em tempo real.
+   - A senha é gerada assim que a página é carregada, mas há um botão **atualizar** que faz uma requisição para a API pelo JavaScript permitindo que o administrador do site possa gerar várias senhas até achar uma que considere mais amigável, se for do seu interesse.
 2) ###Expiração:
    - O administrador pode determinar um número inteiro que determina o número de vezes que a senha pode ser visualizada.
    - Há uma verificação para que o administrador não se esqueça de preencher o campo do número de visualizações e da data de expiração da senha.
@@ -64,10 +64,9 @@ A senha <strong>não deve ser armazenada</strong> após sua expiração
      - Como a rota de visualização obrigatoriamente deve ficar exposta para ser acessada por qualquer um que receber o link, acrescentamos um registro dos acessos feitos, contendo a data e a hora em que o acesso foi feito, bem como o IP que realizou o acesso. Esse registro só pode ser visualizado pelos administradores do site. Isso também não estava nos requisitos, porém consideramos uma melhoria que só acrescenta ao projeto.
 3) ###A URL de visualização: 
    - O sistema gera uma URL de acesso aberto com um número hexadecimal de 32 dígitos. Fizemos isso no intuito de impedir que as rotas possam ser adivinhadas facilmente.
-   - Ao criar uma nova senha, o administrador é redirecionado para uma página onde pode verificar todos os dados antes de enviar ao usuário (os dados já foram persistidos no banco de dados).
+   - Ao criar uma nova senha, o administrador é redirecionado para uma página onde pode verificar todos os dados persistidos no banco de dados.
    - Não sabemos como esse link será enviado. Se fosse por e-mail já implementaríamos um envio automático. Mas o texto dos requisitos sugere que pode ser enviada por várias ferramentas. Optamos então por copiar o link para o clipboard quando o administrador clica em cima do mesmo. Assim ele pode dar um Ctrl + V onde julgar necessário. Para uma ação mais assertiva e automatizada seria necessário realizar um estudo de quais ferramentas são utilizadas, sua documentação e APIs (se houver) e entender qual é o melhor processo de automatização.
-   - A rota de visualização do administrador não incrementa o número de visualizações.
-   - A rota de visualização dos usuários (não logados), incrementa o número de visualizações. 
+   - A rota de visualização dos usuários (não logados) incrementa o número de visualizações. 
      - Obs1:: se a rota de visualização dos usuários for acessada por um administrador logado, não haverá incrementação da visualização.
      - Obs2::Os links da navbar só são visíveis nesta rota caso o administrador esteja logado.
 4) ###Bloqueio da senha
@@ -75,7 +74,7 @@ A senha <strong>não deve ser armazenada</strong> após sua expiração
     - Os outros dados como o link, o número de visualizações, a data de expiração e o registro dos acessos feitos permanece cadastrado no banco de dados.
       - Preferimos deixar assim por ser possível gerar uma auditoria dos acessos caso seja necessário. Sobretudo pelo registro de data/hora de acesso e IPs. Acreditamos fortemente que a auditoria apenas acrescenta segurança ao processo, mas isso poderia ser adequado mediante as decisões do gerente.
       - O administrador pode apagar o registro manualmente, bem como todos os acessos vinculados a ele.
-      - O administrador pode apagar manualmente todos os registros que já expiraram.
+      - O administrador pode apagar todos os registros que já expiraram.
         - Obs: Nós optamos por apagar apenas os registros cujo valor da senha está vazio e não a todos os registros que já atenderam a um dos critérios de expiração justamente para possibilitar a auditoria posterior. O que poderia ser facilmente readequado.
 5) ###Outras considerações
     - Nós optamos por não vincular nenhum nome, e-mail ou data de criação por entender que isso são informações sensíveis. O ID hexadecimal é suficiente para unificar todas essas informações na medida em que será repassado pelo link de quem tentou acessar e teve algum problema. No entanto isso poderia facilmente ser readequado caso se julgue necessário ou melhore o uso pelo administrador do site.
