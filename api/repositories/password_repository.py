@@ -48,9 +48,10 @@ class PasswodRepository:
         :return: String de uma senha segura validada ou None
         """
         if 8 <= self.size <= 50:
-            while True:
-                random_string = self.generate_random_string()
-                if self.password_is_valid(random_string):
-                    return random_string
+            random_string = self.generate_random_string()
+            if self.password_is_valid(random_string):
+                return random_string
+            else:
+                return self.generate_password()
         else:
             return None
